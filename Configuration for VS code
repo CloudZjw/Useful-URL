@@ -1,0 +1,97 @@
+//这是关于配置vscode环境的CSDN。
+--------------------- 
+作者：sesiria 
+来源：CSDN 
+原文：https://blog.csdn.net/sesiria/article/details/78945076 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+
+//For Mac OS
+//c_cpp_properties.json
+        {
+            "name": "Win32",
+            "intelliSenseMode": "clang-x64",
+            "includePath": [
+                "${workspaceRoot}",
+                "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++",
+                "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/x86_64-w64-mingw32",
+                "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/backward",
+                "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include",
+                "C:/llvm/include",
+                "C:/llvm/x86_64-w64-mingw32/include",
+                "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include-fixed"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "__GNUC__=7",
+                "__cdecl=__attribute__((__cdecl__))"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceRoot}",
+                    "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++",
+                    "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/x86_64-w64-mingw32",
+                    "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include/c++/backward",
+                    "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include",
+                    "C:/llvm/include",
+                    "C:/llvm/x86_64-w64-mingw32/include",
+                    "C:/llvm/lib/gcc/x86_64-w64-mingw32/7.2.0/include-fixed"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+
+//task.json
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile",
+            "type": "shell",
+            "command": "clang++",
+            "args": [
+                "${file}",
+                "-o", // 指定输出文件名，不加该参数则默认输出a.exe
+                "${fileDirname}/${fileBasenameNoExtension}.exe",
+                "-g", // 生成和调试有关的信息
+                "-Wall", // 开启额外警告
+                "-static-libgcc", // 静态链接
+                "-fcolor-diagnostics",
+                "--target=x86_64-w64-mingw", // 默认target为msvc，不加这一条就会找不到头文件
+                "-std=c++11" // C语言最新标准为c11，或根据自己的需要进行修改
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
+
+//launch.json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}.out",//"enter program name, for example ${workspaceFolder}/a.out",
+    
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "preLaunchTask": "Compile" 
+        }
+    ]
+}
